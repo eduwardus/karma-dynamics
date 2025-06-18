@@ -34,7 +34,31 @@ F --> G[Enlightenment Conditions]
 | Five Mental Poisons | [five_poisons.py](scripts/five_poisons.py) | `dP/dt = α_P P + β_PA PA - γ_P w P` |
 | Samsara Realms | [realms_attractors.py](scripts/realms_attractors.py) | 6 Attractor configurations |
 | Enlightenment | [enlightenment.py](scripts/enlightenment.py) | `w > max_i((α_i + 0.5Σ|β_ij|)/γ_i)` |
+## Key Parameter Documentation
 
+Each model contains adjustable parameters that control its behavior. Below are the main parameters for all simulation scripts:
+
+<details>
+<summary><b>Individual Karma SEIRS Model</b> (seirs_karma.py)</summary>
+
+| Parameter | Description | Typical Range | Unit | Equation |
+|-----------|-------------|--------------|------|----------|
+| `alpha` | Latent karma activation rate | [0.1, 0.5] | 1/time | `dS/dt = ... - αS` |
+| ... | ... | ... | ... | ... |
+
+</details>
+
+<details>
+<summary><b>Three Karmic Roots Model</b> (three_roots.py)</summary>
+
+| Parameter | Description | Typical Range | Unit | Equation |
+|-----------|-------------|--------------|------|----------|
+| `alpha_I` | Ignorance auto-reinforcement | [0.1, 0.5] | 1/time | `dI/dt = α_I I + ...` |
+| ... | ... | ... | ... | ... |
+
+</details>
+
+... (repeat for each model)
 ## Installation
 ```bash
 git clone https://github.com/tu-usuario/karma-dynamics.git
