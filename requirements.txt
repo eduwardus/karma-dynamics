@@ -1,3 +1,6 @@
+# This research software is archived at:
+# Concept DOI: 10.5281/zenodo.15693404
+# Version DOI: 10.5281/zenodo.15693405
 numpy==1.26.0
 scipy==1.11.1
 matplotlib==3.7.1
