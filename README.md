@@ -1,7 +1,7 @@
 # Mathematical Modeling of Karmic Dynamics
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/tu-usuario/karma-dynamics/main)
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tu-usuario/karma-dynamics)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/eduwardus/karma-dynamics/main)
+```[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/eduwardus/karma-dynamics)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15615660.svg)](https://doi.org/10.5281/zenodo.15615660)
 
 Official computational implementation for the paper:  
@@ -27,13 +27,16 @@ F --> G[Enlightenment Conditions]
 ```
 
 ## Models
-| Model | Script | Key Equations |
-|-------|--------|--------------|
-| Individual Karma | [seirs_karma.py](scripts/seirs_karma.py) | `dS/dt = ξ(1-w)R - αS + λ·R/(1+R)` |
-| Three Karmic Roots | [three_roots.py](scripts/three_roots.py) | `dI/dt = α_I I + β_IA AV - γ_I w I` |
-| Five Mental Poisons | [five_poisons.py](scripts/five_poisons.py) | `dP/dt = α_P P + β_PA PA - γ_P w P` |
-| Samsara Realms | [realms_attractors.py](scripts/realms_attractors.py) | 6 Attractor configurations |
-| Enlightenment | [enlightenment.py](scripts/enlightenment.py) | `w > max_i((α_i + 0.5Σ|β_ij|)/γ_i)` |
+
+| Model | Script | Key Features | Mathematical Representation |
+|-------|--------|--------------|-----------------------------|
+| **Individual Karma** | [seirs_karma.py](scripts/seirs_karma.py) | SEIRS-Karma framework with wisdom modulation | `dS/dt = ξ(1-w)R - αS + λf(R)` |
+| **Three Roots** | [three_roots.py](scripts/three_roots.py) | Ignorance-Attachment-Aversion coupling | `dI/dt = α_I I + β_IA AV - γ_I w I` |
+| **Five Poisons** | [five_poisons.py](scripts/five_poisons.py) | Asymmetric interactions with pride/envy extensions | `dP/dt = α_P P + β_PA PA - γ_P w P` |
+| **Samsara Realms** | [realms_attractors.py](scripts/realms_attractors.py) | Realm-specific attractor configurations | 6 dynamical regimes (Table 1) |
+| **Enlightenment** | [enlightenment.py](scripts/enlightenment.py) | Lyapunov-stable fixed point at K=0 | `w > max( (α_i + 0.5Σ|β_ij|)/γ_i )` |
+| **Stochastic Extensions** | [stochastic_extensions.py](scripts/stochastic_extensions.py) | Randomness & time delays in karmic processes | `dE = [α_E E + ...]dt + σ_E E dW_t` |
+| **Collective Karma Network** | [network_karma.py](scripts/network_karma.py) | Social influence on karmic dynamics | `dw_i/dt = ε(1-w_i) - μ w_i + ΣA_{ij}(w_j - w_i)` |
 ## Key Parameter Documentation
 Each model contains adjustable parameters that control its behavior. Below are the main parameters for all simulation scripts:
 ### 1. Individual Karma SEIRS Model (`seirs_karma.py`)
