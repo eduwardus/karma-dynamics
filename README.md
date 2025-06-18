@@ -2,7 +2,7 @@
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/eduwardus/karma-dynamics/main)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/eduwardus/karma-dynamics)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15615660.svg)](https://doi.org/10.5281/zenodo.15615660)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15693405.svg)](https://doi.org/10.5281/zenodo.15693405)
 
 Official computational implementation for the paper:  
 **"Mathematical Modeling of Karmic Dynamics: An Epidemiological Approach to Buddhist Philosophy"**
