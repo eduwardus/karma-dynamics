@@ -35,7 +35,7 @@ F --> G[Enlightenment Conditions]
 | Samsara Realms | [realms_attractors.py](scripts/realms_attractors.py) | 6 Attractor configurations |
 | Enlightenment | [enlightenment.py](scripts/enlightenment.py) | `w > max_i((α_i + 0.5Σ|β_ij|)/γ_i)` |
 ## Key Parameter Documentation
-
+Each model contains adjustable parameters that control its behavior. Below are the main parameters for all simulation scripts:
 ### 1. Individual Karma SEIRS Model (`seirs_karma.py`)
 | Parameter | Description | Typical Range | Unit | Equation |
 |-----------|-------------|--------------|------|----------|
@@ -100,6 +100,9 @@ F --> G[Enlightenment Conditions]
 | `mu` | Wisdom degradation | [0.01, 0.1] | 1/time |
 | `delta` | Wisdom diffusion strength | [0.1, 0.5] | dimensionless |
 | `w_critical` | Collective wisdom threshold | [0.5, 0.6] | dimensionless |## Installation
+
+
+## Instalation
 ```bash
 git clone https://github.com/tu-usuario/karma-dynamics.git
 cd karma-dynamics
