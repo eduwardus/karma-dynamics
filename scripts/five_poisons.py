@@ -1,4 +1,22 @@
 # scripts/five_poisons.py
+"""
+KARMIC DYNAMICS SIMULATION FRAMEWORK - EXPERIMENTAL VERSION
+
+DISCLAIMER: 
+This code implements speculative mathematical models bridging 
+epidemiology and Buddhist philosophy. It is intended for:
+- Conceptual exploration
+- Methodological experimentation
+- Interdisciplinary dialogue
+
+NOT FOR:
+- Doctrinal interpretation
+- Clinical application
+- Metaphysical claims
+
+All models are provisional abstractions subject to revision.
+Parameter values are heuristic estimates without empirical validation.
+"""
 import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
