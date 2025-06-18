@@ -1,7 +1,7 @@
 # Mathematical Modeling of Karmic Dynamics
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/eduwardus/karma-dynamics/main)
-```[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/eduwardus/karma-dynamics)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/eduwardus/karma-dynamics)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15615660.svg)](https://doi.org/10.5281/zenodo.15615660)
 
 Official computational implementation for the paper:  
@@ -105,11 +105,14 @@ Each model contains adjustable parameters that control its behavior. Below are t
 | `w_critical` | Collective wisdom threshold | [0.5, 0.6] | dimensionless |## Installation
 
 
-## Instalation
+## Installation
 ```bash
-git clone https://github.com/tu-usuario/karma-dynamics.git
+git clone https://github.com/your-username/karma-dynamics.git
 cd karma-dynamics
 pip install -r requirements.txt
+
+# Additional dependencies for specific models:
+pip install sdeint ddeint networkx  # For stochastic_extensions.py and network_karma.py
 ```
 
 ## Usage
@@ -139,8 +142,8 @@ python scripts/five_poisons.py
   title={Mathematical Modeling of Karmic Dynamics: An Epidemiological Approach to Buddhist Philosophy},
   author={Gonz{\'a}lez-Granda, Eduardo},
   journal={Preprint},
-  year={2024},
-  url={https://github.com/tu-usuario/karma-dynamics}
+  year={2025},
+  url={https://github.com/eduwardus/karma-dynamics}
 }
 ```
 
