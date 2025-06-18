@@ -107,7 +107,7 @@ Each model contains adjustable parameters that control its behavior. Below are t
 
 ## Installation
 ```bash
-git clone https://github.com/your-username/karma-dynamics.git
+git clone https://github.com/eduwardus/karma-dynamics.git
 cd karma-dynamics
 pip install -r requirements.txt
 
@@ -125,6 +125,8 @@ python scripts/three_roots.py
 
 # Explore five mental poisons with asymmetric coupling
 python scripts/five_poisons.py
+
+etc...
 ```
 
 ## Philosophical Framework
@@ -138,7 +140,7 @@ python scripts/five_poisons.py
 
 ## Citation
 ```bibtex
-@article{gonzalezgranda2024karmic,
+@article{gonzalezgranda2025karmic,
   title={Mathematical Modeling of Karmic Dynamics: An Epidemiological Approach to Buddhist Philosophy},
   author={Gonz{\'a}lez-Granda, Eduardo},
   journal={Preprint},
