@@ -1,120 +1,84 @@
 # scripts/realms_attractors.py
 """
 KARMIC DYNAMICS SIMULATION FRAMEWORK - EXPERIMENTAL VERSION
-
-DISCLAIMER: 
-This code implements speculative mathematical models bridging 
-epidemiology and Buddhist philosophy. It is intended for:
-- Conceptual exploration
-- Methodological experimentation
-- Interdisciplinary dialogue
-
-NOT FOR:
-- Doctrinal interpretation
-- Clinical application
-- Metaphysical claims
-
-All models are provisional abstractions subject to revision.
-Parameter values are heuristic estimates without empirical validation.
 """
 import numpy as np
-from scipy.integrate import odeint
+from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.gridspec as gridspec
+import warnings
+
+# Suprimir warnings específicos para mejorar la legibilidad
+warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 # =============================================
-# Modelo de Tres Raíces Kármicas (base)
+# Modelo de Tres Raíces Kármicas (ORIGINAL)
 # =============================================
-def three_roots_model(y, t, params):
+def three_roots_model(t, y, params):
     I, A, V = y
+    # Manejo de valores extremos para evitar overflow
+    I = np.clip(I, 1e-10, 1e10)
+    A = np.clip(A, 1e-10, 1e10)
+    V = np.clip(V, 1e-10, 1e10)
+    
     dIdt = params['alpha_I']*I + params['beta_IA']*A*V - params['gamma_I']*params['w']*I
     dAdt = params['alpha_A']*A + params['beta_AV']*V*I - params['gamma_A']*params['w']*A
     dVdt = params['alpha_V']*V + params['beta_VI']*I*A - params['gamma_V']*params['w']*V
     return [dIdt, dAdt, dVdt]
 
+# Evento para detener la integración cuando el sistema explota
+def explosion_event(t, y, params):
+    return np.max(y) - 1e5  # Detener cuando cualquier variable excede 100,000
+explosion_event.terminal = True
+explosion_event.direction = 1
+
 # =============================================
 # Configuraciones de Parámetros para cada Reino
 # =============================================
 def get_realm_config(realm_name):
-    """Devuelve parámetros y condiciones iniciales para cada reino samsárico"""
     configs = {
-        # Devas (Gods) - Punto fijo estable
         'devas': {
-            'params': {
-                'alpha_I': 0.1, 'alpha_A': 0.05, 'alpha_V': 0.08,
-                'beta_IA': 0.2, 'beta_AV': 0.1, 'beta_VI': 0.15,
-                'gamma_I': 0.3, 'gamma_A': 0.25, 'gamma_V': 0.35,
-                'w': 0.45  # Alta sabiduría estabiliza
-            },
-            'y0': [0.1, 0.7, 0.1],  # Predominio de apego (A)
+            'params': {'alpha_I': 0.1, 'alpha_A': 0.05, 'alpha_V': 0.08, 'beta_IA': 0.2, 'beta_AV': 0.1, 'beta_VI': 0.15, 'gamma_I': 0.3, 'gamma_A': 0.25, 'gamma_V': 0.35, 'w': 0.45},
+            'y0': [0.1, 0.7, 0.1],
             'color': 'gold',
-            't': np.linspace(0, 100, 5000)
+            't_span': (0, 100),
+            't_eval': np.linspace(0, 100, 5000)
         },
-        
-        # Asuras (Demigods) - Ciclo límite
         'asuras': {
-            'params': {
-                'alpha_I': 0.15, 'alpha_A': 0.1, 'alpha_V': 0.25,
-                'beta_IA': 0.6, 'beta_AV': 0.7, 'beta_VI': 0.5,
-                'gamma_I': 0.2, 'gamma_A': 0.15, 'gamma_V': 0.25,
-                'w': 0.25  # Sabiduría moderada
-            },
-            'y0': [0.1, 0.2, 0.6],  # Predominio de aversión (V)
+            'params': {'alpha_I': 0.15, 'alpha_A': 0.1, 'alpha_V': 0.25, 'beta_IA': 0.6, 'beta_AV': 0.7, 'beta_VI': 0.5, 'gamma_I': 0.2, 'gamma_A': 0.15, 'gamma_V': 0.25, 'w': 0.25},
+            'y0': [0.1, 0.2, 0.6],
             'color': 'darkorange',
-            't': np.linspace(0, 200, 10000)
+            't_span': (0, 200),
+            't_eval': np.linspace(0, 200, 10000)
         },
-        
-        # Humans - Atractor caótico débil
         'humans': {
-            'params': {
-                'alpha_I': 0.25, 'alpha_A': 0.3, 'alpha_V': 0.2,
-                'beta_IA': 0.8, 'beta_AV': 0.9, 'beta_VI': 0.85,
-                'gamma_I': 0.3, 'gamma_A': 0.35, 'gamma_V': 0.25,
-                'w': 0.15  # Baja sabiduría
-            },
-            'y0': [0.2, 0.5, 0.2],  # Predominio de apego (A)
+            'params': {'alpha_I': 0.25, 'alpha_A': 0.3, 'alpha_V': 0.2, 'beta_IA': 0.8, 'beta_AV': 0.9, 'beta_VI': 0.85, 'gamma_I': 0.3, 'gamma_A': 0.35, 'gamma_V': 0.25, 'w': 0.15},
+            'y0': [0.2, 0.5, 0.2],
             'color': 'green',
-            't': np.linspace(0, 300, 15000)
+            't_span': (0, 300),
+            't_eval': np.linspace(0, 300, 15000)
         },
-        
-        # Animals - Toro cuasiperiódico
         'animals': {
-            'params': {
-                'alpha_I': 0.4, 'alpha_A': 0.1, 'alpha_V': 0.15,
-                'beta_IA': 0.3, 'beta_AV': 0.25, 'beta_VI': 0.2,
-                'gamma_I': 0.25, 'gamma_A': 0.35, 'gamma_V': 0.3,
-                'w': 0.1  # Muy baja sabiduría
-            },
-            'y0': [0.7, 0.15, 0.1],  # Predominio de ignorancia (I)
+            'params': {'alpha_I': 0.4, 'alpha_A': 0.1, 'alpha_V': 0.15, 'beta_IA': 0.3, 'beta_AV': 0.25, 'beta_VI': 0.2, 'gamma_I': 0.25, 'gamma_A': 0.35, 'gamma_V': 0.3, 'w': 0.1},
+            'y0': [0.7, 0.15, 0.1],
             'color': 'brown',
-            't': np.linspace(0, 500, 20000)
+            't_span': (0, 500),
+            't_eval': np.linspace(0, 500, 20000)
         },
-        
-        # Pretas (Hungry Ghosts) - Órbita periódica inestable
         'pretas': {
-            'params': {
-                'alpha_I': 0.2, 'alpha_A': 0.25, 'alpha_V': 0.1,
-                'beta_IA': 1.2, 'beta_AV': 0.8, 'beta_VI': 1.0,
-                'gamma_I': 0.2, 'gamma_A': 0.15, 'gamma_V': 0.25,
-                'w': 0.05  # Sabiduría casi nula
-            },
-            'y0': [0.3, 0.4, 0.1],  # Predominio de apego (A)
+            'params': {'alpha_I': 0.2, 'alpha_A': 0.25, 'alpha_V': 0.1, 'beta_IA': 1.2, 'beta_AV': 0.8, 'beta_VI': 1.0, 'gamma_I': 0.2, 'gamma_A': 0.15, 'gamma_V': 0.25, 'w': 0.05},
+            'y0': [0.3, 0.4, 0.1],
             'color': 'purple',
-            't': np.linspace(0, 400, 20000)
+            't_span': (0, 20),
+            't_eval': np.linspace(0, 20, 10000)
         },
-        
-        # Naraka (Hells) - Atractor caótico fuerte
         'naraka': {
-            'params': {
-                'alpha_I': 0.35, 'alpha_A': 0.1, 'alpha_V': 0.4,
-                'beta_IA': 1.5, 'beta_AV': 1.2, 'beta_VI': 1.8,
-                'gamma_I': 0.15, 'gamma_A': 0.2, 'gamma_V': 0.1,
-                'w': 0.01  # Sabiduría mínima
-            },
-            'y0': [0.2, 0.1, 0.7],  # Predominio de aversión (V)
+            'params': {'alpha_I': 0.35, 'alpha_A': 0.1, 'alpha_V': 0.4, 'beta_IA': 1.5, 'beta_AV': 1.2, 'beta_VI': 1.8, 'gamma_I': 0.15, 'gamma_A': 0.2, 'gamma_V': 0.1, 'w': 0.01},
+            'y0': [0.2, 0.1, 0.7],
             'color': 'red',
-            't': np.linspace(0, 500, 25000)
+            't_span': (0, 10),
+            't_eval': np.linspace(0, 10, 5000)
         }
     }
     return configs[realm_name]
@@ -124,10 +88,8 @@ def get_realm_config(realm_name):
 # =============================================
 def plot_attractor_3d(ax, solution, title, color):
     """Visualiza un atractor en 3D"""
-    I, A, V = solution.T
+    I, A, V = solution
     ax.plot(I, A, V, color=color, linewidth=0.7, alpha=0.8)
-    
-    # Configuración estética
     ax.set_title(title, fontsize=10)
     ax.set_xlabel('Ignorancia (I)')
     ax.set_ylabel('Apego (A)')
@@ -142,7 +104,7 @@ def plot_attractor_3d(ax, solution, title, color):
 
 def plot_time_series(ax, t, solution, title, color):
     """Visualiza series temporales"""
-    I, A, V = solution.T
+    I, A, V = solution
     ax.plot(t, I, 'b-', alpha=0.7, label='Ignorancia')
     ax.plot(t, A, 'g-', alpha=0.7, label='Apego')
     ax.plot(t, V, 'r-', alpha=0.7, label='Aversión')
@@ -153,14 +115,11 @@ def plot_time_series(ax, t, solution, title, color):
     ax.grid(True, linestyle=':', alpha=0.6)
 
 # =============================================
-# Simulación Principal
+# Simulación Principal con manejo robusto
 # =============================================
 def main():
-    # Configurar figura maestro
     plt.figure(figsize=(16, 12))
     plt.suptitle('Reinos Samsáricos como Atractores Dinámicos', fontsize=16, y=0.98)
-    
-    # Crear rejilla para visualizaciones
     gs = gridspec.GridSpec(6, 2, height_ratios=[1, 1, 1, 1, 1, 1], width_ratios=[1, 1])
     
     realms = ['devas', 'asuras', 'humans', 'animals', 'pretas', 'naraka']
@@ -169,25 +128,71 @@ def main():
                       'Toro Cuasiperiódico', 'Órbita Periódica Inestable', 'Atractor Caótico Fuerte']
     
     for i, realm in enumerate(realms):
-        # Obtener configuración del reino
         config = get_realm_config(realm)
         
-        # Simular dinámica
-        solution = odeint(three_roots_model, config['y0'], config['t'], args=(config['params'],))
-        
-        # Diagrama de fase 3D
-        ax1 = plt.subplot(gs[i, 0], projection='3d')
-        plot_attractor_3d(ax1, solution, 
-                         f"{realm_names[i]} - {attractor_types[i]}", 
-                         config['color'])
-        
-        # Series temporales (solo primeros 100 unidades de tiempo)
-        ax2 = plt.subplot(gs[i, 1])
-        t_short = config['t'][config['t'] <= 100]
-        sol_short = solution[:len(t_short)]
-        plot_time_series(ax2, t_short, sol_short, 
-                        f"Evolución Temporal: {realm_names[i]}", 
-                        config['color'])
+        try:
+            # Configuración para reinos problemáticos
+            if realm in ['pretas', 'naraka']:
+                sol = solve_ivp(
+                    three_roots_model,
+                    config['t_span'],
+                    config['y0'],
+                    args=(config['params'],),
+                    method='LSODA',
+                    dense_output=True,
+                    events=[explosion_event],
+                    rtol=1e-3,
+                    atol=1e-4,
+                    max_step=0.01
+                )
+            else:
+                sol = solve_ivp(
+                    three_roots_model,
+                    config['t_span'],
+                    config['y0'],
+                    args=(config['params'],),
+                    method='LSODA',
+                    dense_output=True,
+                    events=[explosion_event],
+                    rtol=1e-6,
+                    atol=1e-8
+                )
+            
+            # Verificar si la integración fue exitosa
+            if sol.status == -1 and sol.t_events[0].size > 0:
+                print(f"Advertencia: Integración interrumpida para {realm_names[i]} en t={sol.t_events[0][0]:.2f}")
+                # Evaluar hasta el punto de interrupción
+                t_eval = np.linspace(config['t_span'][0], min(sol.t_events[0][0], config['t_span'][1]), 1000)
+                solution_values = sol.sol(t_eval)
+            else:
+                t_eval = config['t_eval']
+                solution_values = sol.sol(t_eval)
+            
+            # Diagrama de fase 3D
+            ax1 = plt.subplot(gs[i, 0], projection='3d')
+            plot_attractor_3d(ax1, solution_values, 
+                             f"{realm_names[i]} - {attractor_types[i]}", 
+                             config['color'])
+            
+            # Series temporales (primeros 20 unidades o menos)
+            ax2 = plt.subplot(gs[i, 1])
+            max_time = min(20, config['t_span'][1])
+            mask = t_eval <= max_time
+            plot_time_series(ax2, t_eval[mask], 
+                            solution_values[:, mask],
+                            f"Evolución Temporal: {realm_names[i]}", 
+                            config['color'])
+            
+        except Exception as e:
+            print(f"Error grave en {realm_names[i]}: {str(e)}")
+            # Crear gráficos vacíos para mantener el layout
+            ax1 = plt.subplot(gs[i, 0], projection='3d')
+            ax1.set_title(f"Error en {realm_names[i]}", color='red')
+            ax1.text(0.5, 0.5, 0.5, "Simulación fallida", transform=ax1.transAxes)
+            
+            ax2 = plt.subplot(gs[i, 1])
+            ax2.set_title(f"Error en {realm_names[i]}", color='red')
+            ax2.text(0.5, 0.5, "Simulación fallida", transform=ax2.transAxes)
     
     plt.tight_layout(rect=[0, 0, 1, 0.96])
     plt.savefig('../figs/realms_attractors.png', dpi=150)
@@ -200,49 +205,92 @@ def main():
 # Análisis de Sensibilidad a la Sabiduría
 # =============================================
 def analyze_wisdom_sensitivity():
-    """Muestra cómo cambian los reinos al variar el factor de sabiduría"""
-    realm = 'humans'  # Podemos usar cualquier reino como base
+    realm = 'humans'
     config = get_realm_config(realm)
     w_values = [0.01, 0.15, 0.3, 0.5, 0.7, 0.9]
-    t = np.linspace(0, 100, 5000)
+    t_span = (0, 100)
+    t_eval = np.linspace(0, 100, 5000)
     
     plt.figure(figsize=(14, 8))
     
     for i, w in enumerate(w_values):
-        # Actualizar parámetro de sabiduría
         params = config['params'].copy()
         params['w'] = w
         
-        # Simular
-        solution = odeint(three_roots_model, config['y0'], t, args=(params,))
-        I, A, V = solution.T
-        
-        # Calcular estado final
-        final_state = solution[-1]
-        avg_intensity = np.mean(final_state)
-        
-        # Determinar tipo de dinámica
-        if avg_intensity < 0.05:
-            realm_type = "Cercano a Iluminación"
-        elif np.std([I[-100:], ddof=1) < 0.01:
-            realm_type = "Punto Fijo"
-        elif 0.01 < np.std([I[-100:]]) < 0.1:
-            realm_type = "Ciclo Límite"
-        else:
-            realm_type = "Caótico"
-        
-        # Gráfico de evolución
-        plt.subplot(2, 3, i+1)
-        plt.plot(t, I, 'b-', alpha=0.6, label='Ignorancia')
-        plt.plot(t, A, 'g-', alpha=0.6, label='Apego')
-        plt.plot(t, V, 'r-', alpha=0.6, label='Aversión')
-        plt.title(f'w = {w:.2f} - {realm_type}')
-        plt.xlabel('Tiempo')
-        plt.ylabel('Intensidad')
-        plt.grid(True, linestyle=':', alpha=0.6)
-        
-        if i == 0:
-            plt.legend()
+        try:
+            # Configuración especial para valores bajos de w
+            if w < 0.1:
+                sol = solve_ivp(
+                    three_roots_model,
+                    t_span,
+                    config['y0'],
+                    args=(params,),
+                    method='LSODA',
+                    dense_output=True,
+                    events=[explosion_event],
+                    rtol=1e-3,
+                    atol=1e-4,
+                    max_step=0.01
+                )
+            else:
+                sol = solve_ivp(
+                    three_roots_model,
+                    t_span,
+                    config['y0'],
+                    args=(params,),
+                    method='LSODA',
+                    dense_output=True,
+                    events=[explosion_event],
+                    rtol=1e-6,
+                    atol=1e-8
+                )
+            
+            if sol.status == -1 and sol.t_events[0].size > 0:
+                print(f"Advertencia: Integración interrumpida para w={w} en t={sol.t_events[0][0]:.2f}")
+                t_eval_short = np.linspace(0, min(sol.t_events[0][0], t_span[1]), 1000)
+                solution_values = sol.sol(t_eval_short)
+            else:
+                solution_values = sol.sol(t_eval)
+            
+            I, A, V = solution_values
+            
+            # Determinar tipo de dinámica
+            if solution_values.size == 0 or np.isnan(I).any():
+                realm_type = "Error"
+            else:
+                # Usar solo los últimos 100 puntos si hay suficientes
+                last_points = min(100, len(I))
+                std_dev = np.std(I[-last_points:])
+                final_values = solution_values[:, -1]
+                
+                if np.mean(final_values) < 0.05:
+                    realm_type = "Cercano a Iluminación"
+                elif std_dev < 0.01:
+                    realm_type = "Punto Fijo"
+                elif 0.01 <= std_dev < 0.1:
+                    realm_type = "Ciclo Límite"
+                else:
+                    realm_type = "Caótico"
+            
+            # Gráfico de evolución
+            plt.subplot(2, 3, i+1)
+            plt.plot(t_eval[:len(I)] if len(I) < len(t_eval) else t_eval, I, 'b-', alpha=0.6, label='Ignorancia')
+            plt.plot(t_eval[:len(A)] if len(A) < len(t_eval) else t_eval, A, 'g-', alpha=0.6, label='Apego')
+            plt.plot(t_eval[:len(V)] if len(V) < len(t_eval) else t_eval, V, 'r-', alpha=0.6, label='Aversión')
+            plt.title(f'w = {w:.2f} - {realm_type}')
+            plt.xlabel('Tiempo')
+            plt.ylabel('Intensidad')
+            plt.grid(True, linestyle=':', alpha=0.6)
+            
+            if i == 0:
+                plt.legend()
+                
+        except Exception as e:
+            print(f"Error en w={w}: {str(e)}")
+            plt.subplot(2, 3, i+1)
+            plt.text(0.5, 0.5, f"Error en simulación", transform=plt.gca().transAxes, ha='center')
+            plt.title(f'w = {w:.2f} - Error')
+            plt.grid(True, linestyle=':', alpha=0.6)
     
     plt.suptitle('Sensibilidad a la Sabiduría (w) en el Reino Humano', fontsize=16)
     plt.tight_layout(rect=[0, 0, 1, 0.96])
@@ -250,4 +298,4 @@ def analyze_wisdom_sensitivity():
     plt.show()
 
 if __name__ == "__main__":
-    main()
+    main()                                                                                                                              
