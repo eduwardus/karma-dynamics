@@ -10,7 +10,8 @@ doi: 10.5281/zenodo.15827996
 date-released: 2025-07-07
 license: Apache-2.0
 repository-code: "https://github.com/eduwardus/karma-dynamics"
-
-### Funding Acknowledgment
-This project was partially supported by the **Fundación Himalaya Cultura de Paz** through the grant **FCHP-2025-01**, 
-under its 2025 program for interdisciplinary research in science, inner development, and cultural peace.
+funding:
+  - name: Fundación Himalaya Cultura de Paz
+    identifier: FCHP-2025-01
+    description: >
+      Grant supporting interdisciplinary research in science, inner development, and cultural peace.
