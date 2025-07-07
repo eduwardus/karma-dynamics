@@ -6,10 +6,11 @@ authors:
     given-names: "Eduardo"
     orcid: "https://orcid.org/0000-0002-6771-5145"
 version: 1.1.0
-doi: 10.5281/zenodo.15615661
+doi: 10.5281/zenodo.15827996
 date-released: 2025-07-07
 license: Apache-2.0
 repository-code: "https://github.com/eduwardus/karma-dynamics"
 
 ### Funding Acknowledgment
-This project was partially supported by the **Fundación Himalaya Cultura de Paz** through the grant **FCHP-2025-01**, under its 2025 program for interdisciplinary research in science, inner development, and cultural peace.
+This project was partially supported by the **Fundación Himalaya Cultura de Paz** through the grant **FCHP-2025-01**, 
+under its 2025 program for interdisciplinary research in science, inner development, and cultural peace.
