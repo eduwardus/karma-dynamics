@@ -31,7 +31,7 @@ F --> G[Enlightenment Conditions]
 | Model | Script | Key Features | Mathematical Representation |
 |-------|--------|--------------|-----------------------------|
 | **Individual Karma** | [seirs_karma.py](scripts/seirs_karma.py) | SEIRS-Karma framework with wisdom modulation | `dS/dt = ξ(1-w)R - αS + λf(R)` |
-| **Three Roots** | [three_roots.py](scripts/three_roots.py) | Ignorance-Attachment-Aversion coupling | `dI/dt = α_I I + β_IA AV - γ_I w I` |
+| **Three Roots** | [three_roots.py](scripts/three_roots.py) | Ignorance-Attachment-Aversion coupling | `dI/dt = α<sub>I</sub> I + β_IA AV - γ_I w I` |
 | **Five Poisons** | [five_poisons.py](scripts/five_poisons.py) | Asymmetric interactions with pride/envy extensions | `dP/dt = α_P P + β_PA PA - γ_P w P` |
 | **Samsara Realms** | [realms_attractors.py](scripts/realms_attractors.py) | Realm-specific attractor configurations | 6 dynamical regimes (Table 1) |
 | **Enlightenment** | [enlightenment.py](scripts/enlightenment.py) | Lyapunov-stable fixed point at K=0 | `w > max( (α_i + 0.5Σ|β_ij|)/γ_i )` |
