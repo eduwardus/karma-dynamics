@@ -32,11 +32,11 @@ F --> G[Enlightenment Conditions]
 |-------|--------|--------------|-----------------------------|
 | **Individual Karma** | [seirs_karma.py](scripts/seirs_karma.py) | SEIRS-Karma framework with wisdom modulation | `dS/dt = ξ(1-w)R - αS + λf(R)` |
 | **Three Roots** | [three_roots.py](scripts/three_roots.py) | Ignorance-Attachment-Aversion coupling | dI/dt = α<sub>I</sub> I + β<sub>IA</sub>AV - γ<sub>I</sub> w I |
-| **Five Poisons** | [five_poisons.py](scripts/five_poisons.py) | Asymmetric interactions with pride/envy extensions | `dP/dt = α_P P + β_PA PA - γ_P w P` |
+| **Five Poisons** | [five_poisons.py](scripts/five_poisons.py) | Asymmetric interactions with pride/envy extensions | dP/dt = α<sub>P</sub> P + β<sub>PA</sub> PA - γ<sub>P</sub> w P |
 | **Samsara Realms** | [realms_attractors.py](scripts/realms_attractors.py) | Realm-specific attractor configurations | 6 dynamical regimes (Table 1) |
-| **Enlightenment** | [enlightenment.py](scripts/enlightenment.py) | Lyapunov-stable fixed point at K=0 | `w > max( (α_i + 0.5Σ|β_ij|)/γ_i )` |
-| **Stochastic Extensions** | [stochastic_extensions.py](scripts/stochastic_extensions.py) | Randomness & time delays in karmic processes | `dE = [α_E E + ...]dt + σ_E E dW_t` |
-| **Collective Karma Network** | [network_karma.py](scripts/network_karma.py) | Social influence on karmic dynamics | `dw_i/dt = ε(1-w_i) - μ w_i + ΣA_{ij}(w_j - w_i)` |
+| **Enlightenment** | [enlightenment.py](scripts/enlightenment.py) | Lyapunov-stable fixed point at K=0 | w > max( (α<sub>i</sub> + 0.5Σ|β<sub>ij</sub>|)/γ<sub>i</sub> ) |
+| **Stochastic Extensions** | [stochastic_extensions.py](scripts/stochastic_extensions.py) | Randomness & time delays in karmic processes | dE = [α<sub>E</sub> E + ...]dt + σ<sub>E</sub> E dW<sub>t</sub> |
+| **Collective Karma Network** | [network_karma.py](scripts/network_karma.py) | Social influence on karmic dynamics | dw<sub>i</sub>/dt = ε(1-w<sub>i</sub>) - μ w<sub>i<7sub> + ΣA<sub>{ij}</sub>(w<sub>j</sub> - w<sub>i</sub>) |
 ## Key Parameter Documentation
 Each model contains adjustable parameters that control its behavior. Below are the main parameters for all simulation scripts:
 ### 1. Individual Karma SEIRS Model (`seirs_karma.py`)
@@ -52,22 +52,22 @@ Each model contains adjustable parameters that control its behavior. Below are t
 ### 2. Three Karmic Roots Model (`three_roots.py`)
 | Parameter | Description | Typical Range | Unit | Equation |
 |-----------|-------------|--------------|------|----------|
-| `alpha_I` | Ignorance (I) auto-reinforcement | [0.1, 0.5] | 1/time | `dI/dt = α_I I + ...` |
-| `alpha_A` | Attachment (A) auto-reinforcement | [0.1, 0.5] | 1/time | `dA/dt = α_A A + ...` |
-| `alpha_V` | Aversion (V) auto-reinforcement | [0.1, 0.5] | 1/time | `dV/dt = α_V V + ...` |
-| `beta_IA` | Attachment+Aversion → Ignorance | [0.2, 0.8] | 1/time | `β_IA A V` |
-| `beta_AV` | Aversion+Ignorance → Attachment | [0.2, 0.8] | 1/time | `β_AV V I` |
-| `beta_VI` | Ignorance+Attachment → Aversion | [0.2, 0.8] | 1/time | `β_VI I A` |
-| `gamma_I` | Wisdom sensitivity (Ignorance) | [0.3, 0.7] | dimensionless | `- γ_I w I` |
-| `gamma_A` | Wisdom sensitivity (Attachment) | [0.3, 0.7] | dimensionless | `- γ_A w A` |
-| `gamma_V` | Wisdom sensitivity (Aversion) | [0.3, 0.7] | dimensionless | `- γ_V w V` |
+| alpha<sub>I</sub> | Ignorance (I) auto-reinforcement | [0.1, 0.5] | 1/time | dI/dt = α<sub>I</sub> I + ... |
+| alpha<sub>A</sub> | Attachment (A) auto-reinforcement | [0.1, 0.5] | 1/time | dA/dt = α<sub>A</sub> A + ... |
+| alpha<sub>V</sub> | Aversion (V) auto-reinforcement | [0.1, 0.5] | 1/time | dV/dt = α<sub>V</sub> V + ... |
+| beta<sub>IA</sub> | Attachment+Aversion → Ignorance | [0.2, 0.8] | 1/time | β<sub>IA</sub> A V |
+| beta<sub>AV</sub> | Aversion+Ignorance → Attachment | [0.2, 0.8] | 1/time | β<sub>AV</sub> V I |
+| beta<sub>VI</sub> | Ignorance+Attachment → Aversion | [0.2, 0.8] | 1/time | β<sub>VI</sub> I A |
+| gamma<sub>I</sub> | Wisdom sensitivity (Ignorance) | [0.3, 0.7] | dimensionless | - γ<sub>I</sub> w I |
+| gamma<sub>A</sub> | Wisdom sensitivity (Attachment) | [0.3, 0.7] | dimensionless | - γ<sub>A</sub> w A |
+| gamma<sub>V</sub> | Wisdom sensitivity (Aversion) | [0.3, 0.7] | dimensionless | - γ<sub>V</sub> w V |
 | `w` | Wisdom factor | [0, 1] | dimensionless | Global damping |
 
 ### 3. Five Mental Poisons Model (`five_poisons.py`)
 | Parameter | Description | Typical Range | Unit | Notes |
 |-----------|-------------|--------------|------|-------|
 | `alpha_X` | Auto-reinforcement rate | [0.1, 0.5] | 1/time | X ∈ {I, A, V, P, E} |
-| `beta_XY` | Asymmetric coupling | [0.05, 0.8] | 1/time | Doctrinal hierarchy (β_ij ≠ β_ji) |
+| `beta_XY` | Asymmetric coupling | [0.05, 0.8] | 1/time | Doctrinal hierarchy (β<sub>ij</sub> ≠ β<sub>ji</sub>) |
 | `gamma_X` | Wisdom sensitivity | [0.3, 0.7] | dimensionless | Poison-specific |
 | `w` | Wisdom factor | [0, 1] | dimensionless | Global control |
 
