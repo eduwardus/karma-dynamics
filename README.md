@@ -36,7 +36,7 @@ F --> G[Enlightenment Conditions]
 | **Samsara Realms** | [realms_attractors.py](scripts/realms_attractors.py) | Realm-specific attractor configurations | 6 dynamical regimes (Table 1) |
 | **Enlightenment** | [enlightenment.py](scripts/enlightenment.py) | Lyapunov-stable fixed point at K=0 | w > max( (α<sub>i</sub> + 0.5Σ|β<sub>ij</sub>|)/γ<sub>i</sub> ) |
 | **Stochastic Extensions** | [stochastic_extensions.py](scripts/stochastic_extensions.py) | Randomness & time delays in karmic processes | dE = [α<sub>E</sub> E + ...]dt + σ<sub>E</sub> E dW<sub>t</sub> |
-| **Collective Karma Network** | [network_karma.py](scripts/network_karma.py) | Social influence on karmic dynamics | dw<sub>i</sub>/dt = ε(1-w<sub>i</sub>) - μ w<sub>i<7sub> + ΣA<sub>{ij}</sub>(w<sub>j</sub> - w<sub>i</sub>) |
+| **Collective Karma Network** | [network_karma.py](scripts/network_karma.py) | Social influence on karmic dynamics | dw<sub>i</sub>/dt = ε(1-w<sub>i</sub>) - μ w<sub>i</sub> + ΣA<sub>{ij}</sub>(w<sub>j</sub> - w<sub>i</sub>) |
 ## Key Parameter Documentation
 Each model contains adjustable parameters that control its behavior. Below are the main parameters for all simulation scripts:
 ### 1. Individual Karma SEIRS Model (`seirs_karma.py`)
@@ -66,31 +66,31 @@ Each model contains adjustable parameters that control its behavior. Below are t
 ### 3. Five Mental Poisons Model (`five_poisons.py`)
 | Parameter | Description | Typical Range | Unit | Notes |
 |-----------|-------------|--------------|------|-------|
-| `alpha_X` | Auto-reinforcement rate | [0.1, 0.5] | 1/time | X ∈ {I, A, V, P, E} |
-| `beta_XY` | Asymmetric coupling | [0.05, 0.8] | 1/time | Doctrinal hierarchy (β<sub>ij</sub> ≠ β<sub>ji</sub>) |
-| `gamma_X` | Wisdom sensitivity | [0.3, 0.7] | dimensionless | Poison-specific |
+| alpha<sub>X</sub> | Auto-reinforcement rate | [0.1, 0.5] | 1/time | X ∈ {I, A, V, P, E} |
+| beta<sub>XY</sub> | Asymmetric coupling | [0.05, 0.8] | 1/time | Doctrinal hierarchy (β<sub>ij</sub> ≠ β<sub>ji</sub>) |
+| gamma<sub>X</sub> | Wisdom sensitivity | [0.3, 0.7] | dimensionless | Poison-specific |
 | `w` | Wisdom factor | [0, 1] | dimensionless | Global control |
 
 ### 4. Samsara Realms Attractors (`realms_attractors.py`)
 | Parameter | Description | Realm-Specific Values | Notes |
 |-----------|-------------|------------------------|-------|
-| `alpha_X` | Auto-reinforcement | Varies by realm | Higher in Naraka, lower in Devas |
-| `beta_XY` | Cross-coupling | Varies by realm | Strong in Humans, weak in Animals |
-| `gamma_X` | Wisdom sensitivity | Varies by realm | Higher in Devas |
+| alpha<sub>X</sub> | Auto-reinforcement | Varies by realm | Higher in Naraka, lower in Devas |
+| beta<sub>XY</sub> | Cross-coupling | Varies by realm | Strong in Humans, weak in Animals |
+| gamma<sub>X</sub> | Wisdom sensitivity | Varies by realm | Higher in Devas |
 | `w` | Wisdom level | [0.01 (Naraka) - 0.45 (Devas)] | Dimensionless |
 | `y0` | Initial condition | Poison-predominant setup | Eg: Devas → High Attachment |
 
 ### 5. Enlightenment Analysis (`enlightenment.py`)
 | Parameter | Description | Range | Key Equation |
 |-----------|-------------|-------|--------------|
-| `w_critical` | Minimum wisdom threshold | >0 | `max_i((α_i + 0.5Σ|β_ij|)/γ_i)` |
+| `w_critical` | Minimum wisdom threshold | >0 | max_i((α<sub>i</sub> + 0.5Σ|β<sub>ij</sub>|)/γ<sub>i</sub>)` |
 | `recovery_threshold` | Convergence tolerance | [0.01, 0.1] | 10% of perturbation |
 | `tolerance` | Enlightenment precision | 1e-3 | `||K|| < tolerance` |
 
 ### 6. Stochastic Extensions (`stochastic_extensions.py`)
 | Parameter | Description | Typical Range | Unit |
 |-----------|-------------|--------------|------|
-| `sigma_X` | Noise intensity (X=S,E,I,R) | [0.01, 0.1] | dimensionless |
+| sigma<sub>X</sub> | Noise intensity (X=S,E,I,R) | [0.01, 0.1] | dimensionless |
 | `tau` | Karmic maturation delay | [5, 20] | time |
 | `perturbation` | (time, intensity, variable) | - | Tuple specification |
 | `recovery_threshold` | Resilience threshold | [0.05, 0.2] | dimensionless |
@@ -98,7 +98,7 @@ Each model contains adjustable parameters that control its behavior. Below are t
 ### 7. Collective Karma Network (`network_karma.py`)
 | Parameter | Description | Typical Range | Unit |
 |-----------|-------------|--------------|------|
-| `kappa_X` | Social influence strength | [0.01, 0.1] | 1/time |
+| kappa<sub>X</sub> | Social influence strength | [0.01, 0.1] | 1/time |
 | `epsilon` | Intrinsic wisdom growth | [0.05, 0.2] | 1/time |
 | `mu` | Wisdom degradation | [0.01, 0.1] | 1/time |
 | `delta` | Wisdom diffusion strength | [0.1, 0.5] | dimensionless |
